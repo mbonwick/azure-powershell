@@ -21,7 +21,8 @@
 ## Upcoming Release
 * Customized display format of PSAzureRmAccount to hide secret of service principal [#14208]
 * Added optional parameter `AuthScope` to `Connect-AzAccount` to support enhanced authentication of data plane features
-* Supported subject name issuer authentication.
+* Supported subject name issuer authentication
+* Supported certificate file as input parameter of Connect-AzAccount [#9160]
 
 ## Version 2.2.8
 * Fallback to first valid context if current default context key is "Default" which is invalid

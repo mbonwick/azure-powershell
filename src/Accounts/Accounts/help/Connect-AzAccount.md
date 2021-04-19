@@ -44,6 +44,15 @@ Connect-AzAccount [-Environment <String>] -CertificateThumbprint <String> -Appli
  [-DefaultProfile <IAzureContextContainer>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
+### ServicePrincipalCertificateFileWithSubscriptionId
+```
+Connect-AzAccount [-Environment <String>] -ApplicationId <String> [-ServicePrincipal] -Tenant <String>
+ [-Subscription <String>] [-ContextName <String>] [-SkipContextPopulation] [-MaxContextPopulation <Int32>]
+ [-Force] [-SendCertificateChain] -CertificatePath <String> [-CertificatePassword <SecureString>]
+ [-Scope <ContextModificationScope>] [-DefaultProfile <IAzureContextContainer>] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
+```
+
 ### AccessTokenWithSubscriptionId
 ```
 Connect-AzAccount [-Environment <String>] [-Tenant <String>] -AccessToken <String> [-GraphAccessToken <String>]
@@ -214,6 +223,25 @@ Account                SubscriptionName TenantId                Environment
 -------                ---------------- --------                -----------
 yyyy-yyyy-yyyy-yyyy    Subscription1    xxxx-xxxx-xxxx-xxxx     AzureCloud
 ```
+
+### Example 9: Connect using certificate file
+
+This example connects to an Azure account using certificate-based service principal authentication.
+The certificate file, which is specified by `CertficatePath`, should contains both certificate and private key as the input.
+
+```powershell
+$securePassword = $plainPassword | ConvertTo-SecureString -AsPlainText -Force
+$TenantId = '4cd76576-b611-43d0-8f2b-adcb139531bf'
+$ApplicationId = '3794a65a-e4e4-493d-ac1d-f04308d712dd'
+Connect-AzAccount -ServicePrincipal -ApplicationId $ApplicationId -TenantId $TenantId -CertificatePath './certificatefortest.pfx' -CertificatePassword $securePassword
+```
+
+```Output
+Account             SubscriptionName TenantId            Environment
+-------             ---------------- --------            -----------
+xxxx-xxxx-xxxx-xxxx Subscription1    xxxx-xxxx-xxxx-xxxx AzureCloud
+```
+
 ## PARAMETERS
 
 ### -AccessToken
@@ -273,7 +301,37 @@ Application ID of the service principal.
 
 ```yaml
 Type: System.String
-Parameter Sets: ServicePrincipalCertificateWithSubscriptionId
+Parameter Sets: ServicePrincipalCertificateWithSubscriptionId, ServicePrincipalCertificateFileWithSubscriptionId
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -CertificatePassword
+The password required to access the pkcs#12 certificate file.
+
+```yaml
+Type: System.Security.SecureString
+Parameter Sets: ServicePrincipalCertificateFileWithSubscriptionId
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -CertificatePath
+The path of certficate file in pkcs#12 format.
+
+```yaml
+Type: System.String
+Parameter Sets: ServicePrincipalCertificateFileWithSubscriptionId
 Aliases:
 
 Required: True
@@ -532,7 +590,7 @@ Specifies if the x5c claim (public key of the certificate) should be sent to the
 
 ```yaml
 Type: System.Management.Automation.SwitchParameter
-Parameter Sets: ServicePrincipalCertificateWithSubscriptionId
+Parameter Sets: ServicePrincipalCertificateWithSubscriptionId, ServicePrincipalCertificateFileWithSubscriptionId
 Aliases:
 
 Required: False
@@ -560,7 +618,7 @@ Accept wildcard characters: False
 
 ```yaml
 Type: System.Management.Automation.SwitchParameter
-Parameter Sets: ServicePrincipalCertificateWithSubscriptionId
+Parameter Sets: ServicePrincipalCertificateWithSubscriptionId, ServicePrincipalCertificateFileWithSubscriptionId
 Aliases:
 
 Required: False
@@ -640,7 +698,7 @@ Accept wildcard characters: False
 
 ```yaml
 Type: System.String
-Parameter Sets: ServicePrincipalWithSubscriptionId, ServicePrincipalCertificateWithSubscriptionId
+Parameter Sets: ServicePrincipalWithSubscriptionId, ServicePrincipalCertificateWithSubscriptionId, ServicePrincipalCertificateFileWithSubscriptionId
 Aliases: Domain, TenantId
 
 Required: True
